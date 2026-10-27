@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSeek | Profile</title>
+</head>
+<body>
+    <h1>OpenSeek</h1>
+    <h2>Your GitHub Profile</h2>
+
+    <p id="status">Loading your profile...</p>
+
+    <div id="profile" hidden>
+        <img id="avatar" alt="GitHub profile avatar" width="100">
+        <p>Name: <span id="name"></span></p>
+        <p>Username: <span id="username"></span></p>
+        <a id="github-link" target="_blank" rel="noopener noreferrer">
+            View GitHub Profile
+        </a>
+
+        <p>
+            <button id="logout">Log out</button>
+        </p>
+    </div>
+
+    <script>
+        async function loadProfile() {
+            const status = document.getElementById("status");
+
+            try {
+                const response = await fetch("/api/me");
+
+                if (response.status === 401) {
+                    window.location.href = "/";
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error("Could not load profile");
+                }
+
+                const user = await response.json();
+
+                document.getElementById("avatar").src = user.avatarUrl;
+                document.getElementById("name").textContent =
+                    user.name || "Not provided";
+                document.getElementById("username").textContent =
+                    user.username;
+                document.getElementById("github-link").href =
+                    user.profileUrl;
+
+                document.getElementById("profile").hidden = false;
+                status.textContent = "Login successful!";
+            } catch (error) {
+                status.textContent =
+                    "Unable to load your profile. Please refresh the page.";
+                console.error(error);
+            }
+        }
+
+        document.getElementById("logout").addEventListener("click", async () => {
+            try {
+                const response = await fetch("/auth/logout", {
+                    method: "POST"
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else if (response.ok) {
+                    window.location.href = "/";
+                } else {
+                    alert("Logout failed. Please try again.");
+                }
+            } catch (error) {
+                alert("Could not connect to the server.");
+            }
+        });
+
+        loadProfile();
+    </script>
+</body>
+</html>

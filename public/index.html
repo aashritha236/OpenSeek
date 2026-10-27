@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+	<title>OpenSeek | Login</title>
+</head>
+<body>
+	<h1>OpenSeek</h1>
+	<p>Seek, Contribute, Make an Impact. </p>
+	
+	<h2> Welcome to OpenSeek </h2>
+	<p> Discover the open-source contributions that match your skills. </p>
+	
+	<button id="github-login">Continue with GitHub</button>
+	<script>
+		document.getElementById("github-login").addEventListener("click", () => {
+		window.location.href = "/auth/github";
+		});
+	</script>
+</body>
+</html>
