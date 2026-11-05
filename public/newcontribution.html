@@ -1,0 +1,1886 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>New Contribution · OpenSeek</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Helvetica,
+                Arial,
+                sans-serif;
+
+            background: #ffffff;
+            color: #1f2328;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 64px;
+            border-bottom: 1px solid #d8dee4;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 6%;
+            gap: 36px;
+
+            background: #ffffff;
+        }
+
+        .logo {
+            color: #1f2328;
+            text-decoration: none;
+
+            font-size: 21px;
+            font-weight: 600;
+
+            margin-right: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+            flex: 1;
+        }
+
+        .nav-links a {
+            color: #57606a;
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #0969da;
+        }
+
+        .nav-links a.active {
+            color: #1f2328;
+            font-weight: 600;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+
+            border-radius: 50%;
+            border: 1px solid #d8dee4;
+
+            object-fit: cover;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+
+            padding: 55px 30px 80px;
+        }
+
+        .page-header {
+            margin-bottom: 38px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            letter-spacing: -0.5px;
+
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #656d76;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           SEARCH PANEL
+        ========================= */
+
+        .search-panel {
+            border: 1px solid #d8dee4;
+            border-radius: 8px;
+
+            padding: 28px;
+
+            background: #ffffff;
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 24px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+
+            margin-bottom: 7px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #656d76;
+
+            margin-top: 5px;
+        }
+
+        select,
+        input {
+            height: 40px;
+
+            padding: 0 11px;
+
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+
+            background: #ffffff;
+
+            color: #1f2328;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #0969da;
+
+            box-shadow:
+                0 0 0 2px rgba(9, 105, 218, 0.15);
+        }
+
+
+        /* =========================
+           SEARCH BUTTON
+        ========================= */
+
+        .search-row {
+            margin-top: 27px;
+
+            display: flex;
+            justify-content: flex-end;
+
+            border-top: 1px solid #d8dee4;
+
+            padding-top: 22px;
+        }
+
+        .search-btn {
+            border: 1px solid rgba(31, 35, 40, 0.15);
+
+            background: #1f883d;
+            color: #ffffff;
+
+            border-radius: 6px;
+
+            padding: 9px 17px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background: #1a7f37;
+        }
+
+        .search-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+
+        /* =========================
+           RESULTS
+        ========================= */
+
+        .results-section {
+            margin-top: 45px;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+        }
+
+        .results-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .result-count {
+            font-size: 13px;
+            color: #656d76;
+        }
+
+        .results {
+            border: 1px solid #d8dee4;
+            border-radius: 8px;
+
+            overflow: hidden;
+        }
+
+        .result {
+            padding: 24px;
+
+            border-bottom: 1px solid #d8dee4;
+        }
+
+        .result:last-child {
+            border-bottom: none;
+        }
+
+        .result-title {
+            color: #0969da;
+
+            font-size: 17px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            display: inline-block;
+
+            margin-bottom: 7px;
+        }
+
+        .result-title:hover {
+            text-decoration: underline;
+        }
+
+        .repository {
+            font-size: 13px;
+            color: #656d76;
+
+            margin-bottom: 14px;
+        }
+
+
+        /* =========================
+           MATCH INFORMATION
+        ========================= */
+
+        .match-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 14px;
+        }
+
+        .match-rank {
+            font-size: 13px;
+            font-weight: 700;
+
+            color: #57606a;
+        }
+
+        .match-score {
+            font-size: 14px;
+            font-weight: 700;
+
+            color: #1a7f37;
+
+            background: #dafbe1;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+        }
+
+        .match-details {
+            display: flex;
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin: 14px 0;
+        }
+
+        .match-details span {
+            font-size: 12px;
+
+            color: #57606a;
+
+            background: #f6f8fa;
+
+            border: 1px solid #d0d7de;
+
+            padding: 4px 9px;
+
+            border-radius: 6px;
+        }
+
+
+        /* =========================
+           LABELS
+        ========================= */
+
+        .tags {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+        }
+
+        .tag {
+            border: 1px solid #d8dee4;
+
+            background: #f6f8fa;
+
+            border-radius: 20px;
+
+            padding: 3px 9px;
+
+            font-size: 11px;
+
+            color: #57606a;
+        }
+
+
+        /* =========================
+           AI EXPLANATION
+        ========================= */
+
+        .ai-section {
+            margin-top: 20px;
+
+            border-top: 1px solid #d8dee4;
+
+            padding-top: 20px;
+        }
+
+        .ai-heading {
+            font-size: 14px;
+            font-weight: 700;
+
+            margin-bottom: 14px;
+
+            color: #1f2328;
+        }
+
+        .ai-block {
+            margin-bottom: 17px;
+        }
+
+        .ai-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .ai-title {
+            font-size: 13px;
+            font-weight: 700;
+
+            margin-bottom: 6px;
+
+            color: #24292f;
+        }
+
+        .ai-text {
+            font-size: 13px;
+            line-height: 1.6;
+
+            color: #57606a;
+        }
+
+        .ai-list {
+            padding-left: 19px;
+
+            color: #57606a;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        .readiness {
+            padding: 12px 14px;
+
+            background: #f6f8fa;
+
+            border: 1px solid #d8dee4;
+
+            border-radius: 7px;
+
+            font-size: 13px;
+
+            line-height: 1.55;
+
+            color: #57606a;
+        }
+
+
+        /* =========================
+           WHY RECOMMENDED
+        ========================= */
+
+        .match-reasons {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            background: #f6f8fa;
+
+            border-radius: 8px;
+        }
+
+        .reason-title {
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: #24292f;
+
+            margin-bottom: 8px;
+        }
+
+        .match-reason {
+            font-size: 13px;
+
+            color: #57606a;
+
+            margin: 5px 0;
+        }
+
+
+        /* =========================
+           RESULT META
+        ========================= */
+
+        .result-meta {
+            margin-top: 15px;
+
+            font-size: 12px;
+
+            color: #656d76;
+
+            line-height: 1.6;
+        }
+
+        .result-action {
+            margin-top: 15px;
+        }
+
+        .result-action a {
+            color: #0969da;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .result-action a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            padding: 45px 20px;
+
+            text-align: center;
+
+            color: #656d76;
+
+            font-size: 14px;
+        }
+
+        .empty-state h3 {
+            color: #1f2328;
+
+            font-size: 16px;
+
+            margin-bottom: 7px;
+        }
+
+        .empty-state p {
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 40px 20px 60px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
+    <nav class="navbar">
+
+        <a href="/dashboard.html" class="logo">
+            OpenSeek
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="/contributions.html">
+                My Contributions
+            </a>
+
+            <a href="/newcontribution.html" class="active">
+                New Contribution
+            </a>
+
+            <a href="/repositories.html">
+                Repositories
+            </a>
+
+            <a href="/profile.html">
+                Profile
+            </a>
+
+        </div>
+
+        <div class="user-area">
+
+            <img
+                id="avatar"
+                class="avatar"
+                src=""
+                alt="Profile"
+            >
+
+            <span id="username">
+                User
+            </span>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="container">
+
+
+        <div class="page-header">
+
+            <h1>
+                New Contribution
+            </h1>
+
+            <p>
+                Search independently from your saved profile.
+                OpenSeek will rank GitHub issues based on your current choices.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             SEARCH FORM
+        ========================= -->
+
+        <section class="search-panel">
+
+            <div class="form-grid">
+
+
+                <!-- TECHNOLOGY -->
+
+                <div class="field">
+
+                    <label for="technology">
+                        Technology
+                    </label>
+
+                    <select id="technology">
+
+                        <option value="">
+                            Any technology
+                        </option>
+
+                        <option value="Java">
+                            Java
+                        </option>
+
+                        <option value="Python">
+                            Python
+                        </option>
+
+                        <option value="JavaScript">
+                            JavaScript
+                        </option>
+
+                        <option value="TypeScript">
+                            TypeScript
+                        </option>
+
+                        <option value="C++">
+                            C++
+                        </option>
+
+                        <option value="Go">
+                            Go
+                        </option>
+
+                        <option value="Rust">
+                            Rust
+                        </option>
+
+                        <option value="HTML/CSS">
+                            HTML / CSS
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PROFICIENCY -->
+
+                <div class="field">
+
+                    <label for="proficiency">
+                        Proficiency
+                    </label>
+
+                    <select id="proficiency">
+
+                        <option value="">
+                            Any level
+                        </option>
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+                    </select>
+
+                    <span class="hint">
+                        Used to estimate whether the issue suits your current level.
+                    </span>
+
+                </div>
+
+
+                <!-- CONTRIBUTION TYPE -->
+
+                <div class="field">
+
+                    <label for="contributionType">
+                        Contribution type
+                    </label>
+
+                    <select id="contributionType">
+
+                        <option value="">
+                            Any type
+                        </option>
+
+                        <option value="Bug Fix">
+                            Bug Fix
+                        </option>
+
+                        <option value="Feature">
+                            Feature
+                        </option>
+
+                        <option value="Documentation">
+                            Documentation
+                        </option>
+
+                        <option value="Testing">
+                            Testing
+                        </option>
+
+                        <option value="Refactoring">
+                            Refactoring
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DIFFICULTY -->
+
+                <div class="field">
+
+                    <label for="difficulty">
+                        Preferred difficulty
+                    </label>
+
+                    <select id="difficulty">
+
+                        <option value="">
+                            Any difficulty
+                        </option>
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PROJECT SIZE -->
+
+                <div class="field">
+
+                    <label for="projectSize">
+                        Project size
+                    </label>
+
+                    <select id="projectSize">
+
+                        <option value="">
+                            Any size
+                        </option>
+
+                        <option value="Small">
+                            Small
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="Large">
+                            Large
+                        </option>
+
+                    </select>
+
+                    <span class="hint">
+                        OpenSeek estimates the scope from the issue.
+                    </span>
+
+                </div>
+
+
+                <!-- AREA -->
+
+                <div class="field">
+
+                    <label for="areaOfInterest">
+                        Area of interest
+                    </label>
+
+                    <select id="areaOfInterest">
+
+                        <option value="">
+                            Any area
+                        </option>
+
+                        <option value="Web Development">
+                            Web Development
+                        </option>
+
+                        <option value="Machine Learning">
+                            Machine Learning
+                        </option>
+
+                        <option value="Artificial Intelligence">
+                            Artificial Intelligence
+                        </option>
+
+                        <option value="Data Science">
+                            Data Science
+                        </option>
+
+                        <option value="DevOps / Cloud">
+                            DevOps / Cloud
+                        </option>
+
+                        <option value="Cybersecurity">
+                            Cybersecurity
+                        </option>
+
+                        <option value="Mobile Development">
+                            Mobile Development
+                        </option>
+
+                        <option value="Open Source / Developer Tools">
+                            Open Source / Developer Tools
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- LEARNING GOAL -->
+
+                <div class="field">
+
+                    <label for="learningGoal">
+                        Learning goal
+                    </label>
+
+                    <select id="learningGoal">
+
+                        <option value="">
+                            No specific goal
+                        </option>
+
+                        <option value="Build Experience">
+                            Build Experience
+                        </option>
+
+                        <option value="Learn New Technology">
+                            Learn New Technology
+                        </option>
+
+                        <option value="Improve Existing Skills">
+                            Improve Existing Skills
+                        </option>
+
+                        <option value="Make First Contribution">
+                            Make First Contribution
+                        </option>
+
+                        <option value="Work on Challenging Problems">
+                            Work on Challenging Problems
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- KEYWORDS -->
+
+                <div class="field full">
+
+                    <label for="keywords">
+                        Keywords
+                    </label>
+
+                    <input
+                        type="text"
+                        id="keywords"
+                        placeholder="authentication, REST API, testing..."
+                    >
+
+                    <span class="hint">
+                        Optional. Add specific technologies, features or concepts.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH BUTTON -->
+
+            <div class="search-row">
+
+                <button
+                    id="searchButton"
+                    class="search-btn"
+                    type="button"
+                >
+                    Find Best Matches
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RESULTS
+        ========================= -->
+
+        <section class="results-section">
+
+            <div class="results-header">
+
+                <h2>
+                    Best Matches
+                </h2>
+
+                <span
+                    id="resultCount"
+                    class="result-count"
+                >
+                    0 matches
+                </span>
+
+            </div>
+
+
+            <div
+                class="results"
+                id="results"
+            >
+
+                <div class="empty-state">
+
+                    <h3>
+                        Ready to find your next contribution?
+                    </h3>
+
+                    <p>
+                        Choose your preferences and let OpenSeek
+                        rank the strongest GitHub issue matches.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+
+        // ==================================================
+        // LOAD USER
+        // ==================================================
+
+        async function loadUser() {
+
+            try {
+
+                const response =
+                    await fetch("/api/me");
+
+
+                if (!response.ok) {
+
+                    window.location.href = "/";
+
+                    return;
+                }
+
+
+                const user =
+                    await response.json();
+
+
+                document.getElementById("username")
+                    .textContent =
+                    user.username || "User";
+
+
+                if (user.avatarUrl) {
+
+                    document.getElementById("avatar")
+                        .src =
+                        user.avatarUrl;
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load user:",
+                    error
+                );
+
+                window.location.href = "/";
+            }
+        }
+
+
+        // ==================================================
+        // SEARCH ISSUES
+        // ==================================================
+
+        async function searchIssues() {
+
+
+            // ------------------------------------------------
+            // READ CURRENT FORM VALUES
+            // ------------------------------------------------
+
+            const technology =
+                document.getElementById("technology").value;
+
+            const proficiency =
+                document.getElementById("proficiency").value;
+
+            const contributionType =
+                document.getElementById("contributionType").value;
+
+            const difficulty =
+                document.getElementById("difficulty").value;
+
+            const projectSize =
+                document.getElementById("projectSize").value;
+
+            const areaOfInterest =
+                document.getElementById("areaOfInterest").value;
+
+            const learningGoal =
+                document.getElementById("learningGoal").value;
+
+            const keywords =
+                document.getElementById("keywords")
+                    .value
+                    .trim();
+
+
+            // ------------------------------------------------
+            // DEBUG
+            // ------------------------------------------------
+
+            console.log(
+                "OpenSeek search preferences:",
+                {
+                    technology,
+                    proficiency,
+                    contributionType,
+                    difficulty,
+                    projectSize,
+                    areaOfInterest,
+                    learningGoal,
+                    keywords
+                }
+            );
+
+
+            const searchButton =
+                document.getElementById("searchButton");
+
+            const resultsContainer =
+                document.getElementById("results");
+
+            const resultCount =
+                document.getElementById("resultCount");
+
+
+            searchButton.disabled = true;
+
+            searchButton.textContent =
+                "Finding Matches...";
+
+
+            resultCount.textContent =
+                "Analyzing...";
+
+
+            resultsContainer.innerHTML = `
+
+                <div class="empty-state">
+
+                    <h3>
+                        Finding your best matches...
+                    </h3>
+
+                    <p>
+                        OpenSeek is analyzing GitHub issues
+                        and calculating compatibility.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            try {
+
+
+                // ------------------------------------------------
+                // BUILD REQUEST
+                // ------------------------------------------------
+
+                const params =
+                    new URLSearchParams();
+
+
+                params.set(
+                    "technology",
+                    technology
+                );
+
+                params.set(
+                    "proficiency",
+                    proficiency
+                );
+
+                params.set(
+                    "contributionType",
+                    contributionType
+                );
+
+                params.set(
+                    "difficulty",
+                    difficulty
+                );
+
+                params.set(
+                    "projectSize",
+                    projectSize
+                );
+
+                params.set(
+                    "areaOfInterest",
+                    areaOfInterest
+                );
+
+                params.set(
+                    "learningGoal",
+                    learningGoal
+                );
+
+                params.set(
+                    "keywords",
+                    keywords
+                );
+
+
+                const requestUrl =
+                    `/api/issues/search?${params.toString()}`;
+
+
+                console.log(
+                    "OpenSeek API request:",
+                    requestUrl
+                );
+
+
+                // ------------------------------------------------
+                // CALL BACKEND
+                // ------------------------------------------------
+
+                const response =
+                    await fetch(requestUrl);
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "OpenSeek API response:",
+                    data
+                );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error ||
+                        "Search failed"
+                    );
+                }
+
+
+                const recommendations =
+                    data.recommendations || [];
+
+
+                // ------------------------------------------------
+                // NO RESULTS
+                // ------------------------------------------------
+
+                if (
+                    recommendations.length === 0
+                ) {
+
+                    resultCount.textContent =
+                        "0 matches";
+
+
+                    resultsContainer.innerHTML = `
+
+                        <div class="empty-state">
+
+                            <h3>
+                                No strong matches found
+                            </h3>
+
+                            <p>
+                                Try changing your technology,
+                                contribution type or keywords.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                    return;
+                }
+
+
+                resultCount.textContent =
+                    `${recommendations.length} best matches`;
+
+
+                // ------------------------------------------------
+                // RENDER TOP 5
+                // ------------------------------------------------
+
+                resultsContainer.innerHTML =
+
+                    recommendations
+                        .slice(0, 5)
+                        .map(
+                            (issue, index) =>
+                                renderIssue(
+                                    issue,
+                                    index
+                                )
+                        )
+                        .join("");
+
+
+            } catch (error) {
+
+                console.error(
+                    "OpenSeek search error:",
+                    error
+                );
+
+
+                resultCount.textContent =
+                    "Search failed";
+
+
+                resultsContainer.innerHTML = `
+
+                    <div class="empty-state">
+
+                        <h3>
+                            Unable to find matches
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(error.message)}
+                        </p>
+
+                    </div>
+
+                `;
+
+
+            } finally {
+
+                searchButton.disabled = false;
+
+                searchButton.textContent =
+                    "Find Best Matches";
+            }
+        }
+
+
+        // ==================================================
+        // RENDER ISSUE
+        // ==================================================
+
+        function renderIssue(
+            issue,
+            index
+        ) {
+
+
+            // ------------------------------------------------
+            // LABELS
+            // ------------------------------------------------
+
+            const labels =
+                issue.labels &&
+                issue.labels.length
+
+                    ? issue.labels
+                        .slice(0, 6)
+                        .map(
+                            label => `
+                                <span class="tag">
+                                    ${escapeHtml(label)}
+                                </span>
+                            `
+                        )
+                        .join("")
+
+                    : `
+                        <span class="tag">
+                            No labels
+                        </span>
+                    `;
+
+
+            // ------------------------------------------------
+            // REASONS
+            // ------------------------------------------------
+
+            const reasons =
+                issue.reasons &&
+                issue.reasons.length
+
+                    ? issue.reasons
+                        .map(
+                            reason => `
+                                <div class="match-reason">
+                                    ✓ ${escapeHtml(reason)}
+                                </div>
+                            `
+                        )
+                        .join("")
+
+                    : `
+                        <div class="match-reason">
+                            ✓ Strong overall compatibility
+                        </div>
+                    `;
+
+
+            // ------------------------------------------------
+            // AI EXPLANATION
+            // ------------------------------------------------
+
+            const ai =
+                issue.aiExplanation;
+
+
+            let aiHtml = "";
+
+
+            if (ai) {
+
+                const neededSkills =
+                    Array.isArray(
+                        ai.whatYouNeed
+                    )
+                        ? ai.whatYouNeed
+                        : [];
+
+
+                const startingSteps =
+                    Array.isArray(
+                        ai.beforeYouStart
+                    )
+                        ? ai.beforeYouStart
+                        : [];
+
+
+                aiHtml = `
+
+                    <div class="ai-section">
+
+                        <div class="ai-heading">
+                            OpenSeek AI Explanation
+                        </div>
+
+
+                        <div class="ai-block">
+
+                            <div class="ai-title">
+                                What is this issue?
+                            </div>
+
+                            <div class="ai-text">
+                                ${escapeHtml(
+                                    ai.summary ||
+                                    "No summary available."
+                                )}
+                            </div>
+
+                        </div>
+
+
+                        <div class="ai-block">
+
+                            <div class="ai-title">
+                                What will you work on?
+                            </div>
+
+                            <div class="ai-text">
+                                ${escapeHtml(
+                                    ai.whatYouWillDo ||
+                                    "No explanation available."
+                                )}
+                            </div>
+
+                        </div>
+
+
+                        <div class="ai-block">
+
+                            <div class="ai-title">
+                                What do you need?
+                            </div>
+
+                            ${
+                                neededSkills.length
+
+                                    ? `
+                                        <ul class="ai-list">
+
+                                            ${neededSkills
+                                                .map(
+                                                    skill => `
+                                                        <li>
+                                                            ${escapeHtml(skill)}
+                                                        </li>
+                                                    `
+                                                )
+                                                .join("")}
+
+                                        </ul>
+                                    `
+
+                                    : `
+                                        <div class="ai-text">
+                                            No specific requirements identified.
+                                        </div>
+                                    `
+                            }
+
+                        </div>
+
+
+                        <div class="ai-block">
+
+                            <div class="ai-title">
+                                Learning opportunity
+                            </div>
+
+                            <div class="ai-text">
+                                ${escapeHtml(
+                                    ai.learningOpportunity ||
+                                    "No learning opportunity identified."
+                                )}
+                            </div>
+
+                        </div>
+
+
+                        <div class="ai-block">
+
+                            <div class="ai-title">
+                                Before you start
+                            </div>
+
+                            ${
+                                startingSteps.length
+
+                                    ? `
+                                        <ol class="ai-list">
+
+                                            ${startingSteps
+                                                .map(
+                                                    step => `
+                                                        <li>
+                                                            ${escapeHtml(step)}
+                                                        </li>
+                                                    `
+                                                )
+                                                .join("")}
+
+                                        </ol>
+                                    `
+
+                                    : `
+                                        <div class="ai-text">
+                                            Read the issue and repository contribution guidelines first.
+                                        </div>
+                                    `
+                            }
+
+                        </div>
+
+
+                        <div class="ai-block">
+
+                            <div class="ai-title">
+                                Contribution readiness
+                            </div>
+
+                            <div class="readiness">
+
+                                ${escapeHtml(
+                                    ai.readinessExplanation ||
+                                    "Review the issue carefully before starting."
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+            }
+
+
+            // ------------------------------------------------
+            // ISSUE DATA
+            // ------------------------------------------------
+
+            const difficulty =
+                issue.difficulty ||
+                "Unknown";
+
+
+            const projectSize =
+                issue.projectSize ||
+                "Unknown";
+
+
+            const comments =
+                Number(issue.comments || 0);
+
+
+            const stars =
+                Number(
+                    issue.repositoryStars || 0
+                );
+
+
+            const issueAge =
+                Number(
+                    issue.issueAge || 0
+                );
+
+
+            // ------------------------------------------------
+            // FINAL CARD
+            // ------------------------------------------------
+
+            return `
+
+                <article class="result">
+
+
+                    <div class="match-header">
+
+                        <span class="match-rank">
+                            #${index + 1}
+                        </span>
+
+                        <span class="match-score">
+                            ${issue.matchScore}% Match
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="${escapeAttribute(issue.url)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="result-title"
+                    >
+                        ${escapeHtml(issue.title)}
+                    </a>
+
+
+                    <div class="repository">
+                        ${escapeHtml(issue.repository)}
+                    </div>
+
+
+                    <div class="match-details">
+
+                        <span>
+                            Difficulty:
+                            ${escapeHtml(difficulty)}
+                        </span>
+
+                        <span>
+                            Scope:
+                            ${escapeHtml(projectSize)}
+                        </span>
+
+                        <span>
+                            ${comments} comments
+                        </span>
+
+                        <span>
+                            ${stars} stars
+                        </span>
+
+                    </div>
+
+
+                    <div class="tags">
+
+                        ${labels}
+
+                    </div>
+
+
+                    <div class="match-reasons">
+
+                        <div class="reason-title">
+                            Why OpenSeek recommends this
+                        </div>
+
+                        ${reasons}
+
+                    </div>
+
+
+                    ${aiHtml}
+
+
+                    <div class="result-meta">
+
+                        Updated
+                        ${formatDate(issue.updatedAt)}
+
+                        ·
+
+                        ${issueAge}
+                        days old
+
+                    </div>
+
+
+                    <div class="result-action">
+
+                        <a
+                            href="${escapeAttribute(issue.url)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            View Issue →
+                        </a>
+
+                    </div>
+
+
+                </article>
+
+            `;
+        }
+
+
+        // ==================================================
+        // FORMAT DATE
+        // ==================================================
+
+        function formatDate(
+            dateString
+        ) {
+
+            if (!dateString) {
+                return "Unknown";
+            }
+
+
+            const date =
+                new Date(dateString);
+
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return "Unknown";
+            }
+
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+        }
+
+
+        // ==================================================
+        // ESCAPE HTML
+        // ==================================================
+
+        function escapeHtml(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+        }
+
+
+        // ==================================================
+        // ESCAPE ATTRIBUTE
+        // ==================================================
+
+        function escapeAttribute(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                );
+        }
+
+
+        // ==================================================
+        // BUTTON EVENT
+        // ==================================================
+
+        document
+            .getElementById("searchButton")
+            .addEventListener(
+                "click",
+                searchIssues
+            );
+
+
+        // ==================================================
+        // START
+        // ==================================================
+
+        loadUser();
+
+    </script>
+
+</body>
+</html>
+```
+[/code]

@@ -1,84 +1,1805 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenSeek | Profile</title>
-</head>
-<body>
-    <h1>OpenSeek</h1>
-    <h2>Your GitHub Profile</h2>
 
-    <p id="status">Loading your profile...</p>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <div id="profile" hidden>
-        <img id="avatar" alt="GitHub profile avatar" width="100">
-        <p>Name: <span id="name"></span></p>
-        <p>Username: <span id="username"></span></p>
-        <a id="github-link" target="_blank" rel="noopener noreferrer">
-            View GitHub Profile
-        </a>
+    <title>Profile | OpenSeek</title>
 
-        <p>
-            <button id="logout">Log out</button>
-        </p>
-    </div>
+    <style>
 
-    <script>
-        async function loadProfile() {
-            const status = document.getElementById("status");
+        * {
+            box-sizing: border-box;
+        }
 
-            try {
-                const response = await fetch("/api/me");
+        body {
+            margin: 0;
 
-                if (response.status === 401) {
-                    window.location.href = "/";
-                    return;
-                }
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Helvetica,
+                Arial,
+                sans-serif;
 
-                if (!response.ok) {
-                    throw new Error("Could not load profile");
-                }
+            background: #ffffff;
+            color: #1f2328;
+        }
 
-                const user = await response.json();
 
-                document.getElementById("avatar").src = user.avatarUrl;
-                document.getElementById("name").textContent =
-                    user.name || "Not provided";
-                document.getElementById("username").textContent =
-                    user.username;
-                document.getElementById("github-link").href =
-                    user.profileUrl;
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
 
-                document.getElementById("profile").hidden = false;
-                status.textContent = "Login successful!";
-            } catch (error) {
-                status.textContent =
-                    "Unable to load your profile. Please refresh the page.";
-                console.error(error);
+        .navbar {
+            height: 64px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 32px;
+
+            border-bottom: 1px solid #d8dee4;
+
+            background: #ffffff;
+        }
+
+        .logo {
+            color: #1f2328;
+
+            text-decoration: none;
+
+            font-size: 21px;
+            font-weight: 700;
+
+            letter-spacing: -0.4px;
+
+            margin-right: 42px;
+        }
+
+        .nav-links {
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+
+            gap: 28px;
+
+            flex: 1;
+        }
+
+        .nav-links a {
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+
+            position: relative;
+
+            color: #57606a;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #1f2328;
+        }
+
+        .nav-links a.active {
+            color: #1f2328;
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            bottom: -1px;
+
+            height: 2px;
+
+            background: #fd8c73;
+        }
+
+
+        /* =====================================================
+           USER NAV
+        ===================================================== */
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            color: #57606a;
+
+            font-size: 14px;
+        }
+
+        .nav-avatar {
+            width: 30px;
+            height: 30px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 1px solid #d0d7de;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page {
+            max-width: 1120px;
+
+            margin: 0 auto;
+
+            padding: 42px 32px 80px;
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+        ===================================================== */
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+
+            font-size: 26px;
+            font-weight: 600;
+
+            letter-spacing: -0.3px;
+        }
+
+        .page-header p {
+            margin: 7px 0 0;
+
+            color: #57606a;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           PROFILE LAYOUT
+        ===================================================== */
+
+        .profile-layout {
+            display: grid;
+
+            grid-template-columns: 250px 1fr;
+
+            gap: 55px;
+        }
+
+
+        /* =====================================================
+           LEFT PROFILE
+        ===================================================== */
+
+        .profile-sidebar {
+            border-right: 1px solid #d8dee4;
+
+            padding-right: 35px;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 1px solid #d0d7de;
+
+            display: block;
+
+            margin-bottom: 20px;
+        }
+
+        .profile-name {
+            margin: 0;
+
+            font-size: 21px;
+            font-weight: 600;
+
+            line-height: 1.3;
+        }
+
+        .profile-username {
+            margin-top: 4px;
+
+            color: #57606a;
+
+            font-size: 15px;
+        }
+
+        .github-profile {
+            display: inline-block;
+
+            margin-top: 18px;
+
+            color: #0969da;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+        .github-profile:hover {
+            text-decoration: underline;
+        }
+
+        .edit-profile-button {
+            width: 100%;
+
+            margin-top: 22px;
+
+            padding: 7px 14px;
+
+            border: 1px solid #d0d7de;
+
+            border-radius: 6px;
+
+            background: #f6f8fa;
+
+            color: #24292f;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            cursor: pointer;
+        }
+
+        .edit-profile-button:hover {
+            background: #f3f4f6;
+
+            border-color: #afb8c1;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+            min-width: 0;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section {
+            border: 1px solid #d8dee4;
+
+            border-radius: 6px;
+
+            margin-bottom: 24px;
+
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 18px 20px;
+
+            border-bottom: 1px solid #d8dee4;
+
+            background: #f6f8fa;
+        }
+
+        .section-header h2 {
+            margin: 0;
+
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .section-header p {
+            margin: 5px 0 0;
+
+            color: #57606a;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PREFERENCES
+        ===================================================== */
+
+        .preference {
+            display: grid;
+
+            grid-template-columns: 220px 1fr;
+
+            min-height: 62px;
+
+            border-bottom: 1px solid #d8dee4;
+        }
+
+        .preference:last-child {
+            border-bottom: none;
+        }
+
+        .preference-label {
+            padding: 18px 20px;
+
+            color: #57606a;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .preference-value {
+            padding: 18px 20px;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           TAGS
+        ===================================================== */
+
+        .tags {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 6px;
+        }
+
+        .tag {
+            display: inline-block;
+
+            padding: 3px 9px;
+
+            border: 1px solid #d0d7de;
+
+            border-radius: 20px;
+
+            background: #f6f8fa;
+
+            color: #24292f;
+
+            font-size: 12px;
+        }
+
+        .empty {
+            color: #8c959f;
+
+            font-style: italic;
+        }
+
+
+        /* =====================================================
+           EDIT FORM
+        ===================================================== */
+
+        .edit-section {
+            display: none;
+        }
+
+        .edit-section.visible {
+            display: block;
+        }
+
+        .form {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-description {
+            margin: 0 0 8px;
+
+            color: #57606a;
+
+            font-size: 12px;
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            height: 38px;
+
+            padding: 7px 10px;
+
+            border: 1px solid #d0d7de;
+
+            border-radius: 6px;
+
+            background: #ffffff;
+
+            color: #24292f;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #0969da;
+
+            box-shadow:
+                0 0 0 3px rgba(9, 105, 218, 0.12);
+        }
+
+
+        /* =====================================================
+           FORM ACTIONS
+        ===================================================== */
+
+        .form-actions {
+            display: flex;
+
+            gap: 8px;
+
+            padding-top: 5px;
+        }
+
+        .save-button {
+            padding: 7px 16px;
+
+            border: 1px solid rgba(27, 31, 36, 0.15);
+
+            border-radius: 6px;
+
+            background: #1f883d;
+
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background: #1a7f37;
+        }
+
+        .cancel-button {
+            padding: 7px 16px;
+
+            border: 1px solid #d0d7de;
+
+            border-radius: 6px;
+
+            background: #f6f8fa;
+
+            color: #24292f;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            cursor: pointer;
+        }
+
+        .cancel-button:hover {
+            background: #f3f4f6;
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message {
+            margin-top: 15px;
+
+            padding: 10px 12px;
+
+            border-radius: 6px;
+
+            font-size: 13px;
+
+            display: none;
+        }
+
+        .message.success {
+            display: block;
+
+            background: #dafbe1;
+
+            color: #116329;
+
+            border: 1px solid #aceebb;
+        }
+
+        .message.error {
+            display: block;
+
+            background: #ffebe9;
+
+            color: #cf222e;
+
+            border: 1px solid #ffcecb;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 18px;
+            }
+
+            .nav-user span {
+                display: none;
+            }
+
+            .page {
+                padding: 30px 20px 60px;
+            }
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+
+                gap: 30px;
+            }
+
+            .profile-sidebar {
+                border-right: none;
+
+                border-bottom: 1px solid #d8dee4;
+
+                padding-right: 0;
+
+                padding-bottom: 28px;
+            }
+
+            .profile-avatar {
+                width: 110px;
+                height: 110px;
+            }
+
+            .edit-profile-button {
+                width: auto;
             }
         }
 
-        document.getElementById("logout").addEventListener("click", async () => {
-            try {
-                const response = await fetch("/auth/logout", {
-                    method: "POST"
-                });
 
-                if (response.redirected) {
-                    window.location.href = response.url;
-                } else if (response.ok) {
-                    window.location.href = "/";
-                } else {
-                    alert("Logout failed. Please try again.");
-                }
-            } catch (error) {
-                alert("Could not connect to the server.");
+        @media (max-width: 700px) {
+
+            .navbar {
+                height: auto;
+
+                min-height: 64px;
+
+                flex-wrap: wrap;
+
+                padding-top: 10px;
+                padding-bottom: 10px;
             }
-        });
 
-        loadProfile();
-    </script>
+            .logo {
+                margin-right: 20px;
+            }
+
+            .nav-links {
+                order: 3;
+
+                width: 100%;
+
+                height: 42px;
+
+                overflow-x: auto;
+            }
+
+            .nav-links a {
+                height: 42px;
+
+                white-space: nowrap;
+            }
+
+            .preference {
+                grid-template-columns: 1fr;
+            }
+
+            .preference-label {
+                padding-bottom: 5px;
+            }
+
+            .preference-value {
+                padding-top: 5px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="navbar">
+
+    <a
+        href="/dashboard.html"
+        class="logo"
+    >
+        OpenSeek
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="/contributions.html">
+            My Contributions
+        </a>
+
+        <a href="/newcontribution.html">
+            New Contribution
+        </a>
+
+        <a href="/repositories.html">
+            Repositories
+        </a>
+
+        <a
+            href="/profile.html"
+            class="active"
+        >
+            Profile
+        </a>
+
+    </div>
+
+
+    <div class="nav-user">
+
+        <img
+            id="navAvatar"
+            class="nav-avatar"
+            src=""
+            alt="Profile"
+        >
+
+        <span id="navUsername">
+            User
+        </span>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN PAGE
+===================================================== -->
+
+<main class="page">
+
+
+    <header class="page-header">
+
+        <h1>
+            Profile
+        </h1>
+
+        <p>
+            Manage your OpenSeek contribution preferences.
+        </p>
+
+    </header>
+
+
+    <div class="profile-layout">
+
+
+        <!-- =================================================
+             PROFILE SIDEBAR
+        ================================================== -->
+
+        <aside class="profile-sidebar">
+
+            <img
+                id="profileAvatar"
+                class="profile-avatar"
+                src=""
+                alt="GitHub profile"
+            >
+
+
+            <h2
+                id="profileName"
+                class="profile-name"
+            >
+                Developer
+            </h2>
+
+
+            <div
+                id="profileUsername"
+                class="profile-username"
+            >
+                @username
+            </div>
+
+
+            <a
+                id="githubLink"
+                class="github-profile"
+                href="#"
+                target="_blank"
+            >
+                View GitHub profile →
+            </a>
+
+
+            <button
+                id="editButton"
+                class="edit-profile-button"
+                onclick="showEditForm()"
+            >
+                Edit profile
+            </button>
+
+        </aside>
+
+
+        <!-- =================================================
+             RIGHT CONTENT
+        ================================================== -->
+
+        <div class="content">
+
+
+            <!-- =================================================
+                 SAVED PREFERENCES
+            ================================================= -->
+
+            <section
+                id="profileView"
+                class="section"
+            >
+
+                <div class="section-header">
+
+                    <h2>
+                        OpenSeek preferences
+                    </h2>
+
+                    <p>
+                        Used to personalize your contribution recommendations.
+                    </p>
+
+                </div>
+
+
+                <!-- Skills -->
+
+                <div class="preference">
+
+                    <div class="preference-label">
+                        Skills
+                    </div>
+
+                    <div
+                        id="skillsDisplay"
+                        class="preference-value"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- Experience -->
+
+                <div class="preference">
+
+                    <div class="preference-label">
+                        Experience level
+                    </div>
+
+                    <div
+                        id="experienceDisplay"
+                        class="preference-value"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- Technologies -->
+
+                <div class="preference">
+
+                    <div class="preference-label">
+                        Technologies & areas
+                    </div>
+
+                    <div
+                        id="technologyDisplay"
+                        class="preference-value"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- Contribution type -->
+
+                <div class="preference">
+
+                    <div class="preference-label">
+                        Contribution type
+                    </div>
+
+                    <div
+                        id="contributionDisplay"
+                        class="preference-value"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- Difficulty -->
+
+                <div class="preference">
+
+                    <div class="preference-label">
+                        Preferred difficulty
+                    </div>
+
+                    <div
+                        id="difficultyDisplay"
+                        class="preference-value"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- Learning -->
+
+                <div class="preference">
+
+                    <div class="preference-label">
+                        Learning interests
+                    </div>
+
+                    <div
+                        id="learningDisplay"
+                        class="preference-value"
+                    >
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 EDIT PROFILE
+            ================================================== -->
+
+            <section
+                id="editSection"
+                class="section edit-section"
+            >
+
+                <div class="section-header">
+
+                    <h2>
+                        Edit profile
+                    </h2>
+
+                    <p>
+                        Update the preferences OpenSeek uses for recommendations.
+                    </p>
+
+                </div>
+
+
+                <form
+                    id="profileForm"
+                    class="form"
+                >
+
+
+                    <!-- Skills -->
+
+                    <div class="form-group">
+
+                        <label for="skills">
+                            Skills
+                        </label>
+
+                        <p class="form-description">
+                            Programming languages, tools, and technical skills you already know.
+                        </p>
+
+                        <input
+                            type="text"
+                            id="skills"
+                            placeholder="Java, Python, SQL, Git"
+                        >
+
+                    </div>
+
+
+                    <!-- Experience -->
+
+                    <div class="form-group">
+
+                        <label for="experience">
+                            Experience level
+                        </label>
+
+                        <select id="experience">
+
+                            <option value="">
+                                Select experience level
+                            </option>
+
+                            <option value="Beginner">
+                                Beginner
+                            </option>
+
+                            <option value="Intermediate">
+                                Intermediate
+                            </option>
+
+                            <option value="Advanced">
+                                Advanced
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Technologies -->
+
+                    <div class="form-group">
+
+                        <label for="technologies">
+                            Technologies & areas of interest
+                        </label>
+
+                        <p class="form-description">
+                            Areas you would like to contribute to.
+                        </p>
+
+                        <input
+                            type="text"
+                            id="technologies"
+                            placeholder="Backend, AI/ML, Web Development, Cloud"
+                        >
+
+                    </div>
+
+
+                    <!-- Contribution type -->
+
+                    <div class="form-group">
+
+                        <label for="contributionTypes">
+                            Preferred contribution type
+                        </label>
+
+                        <p class="form-description">
+                            Types of open-source work you prefer.
+                        </p>
+
+                        <input
+                            type="text"
+                            id="contributionTypes"
+                            placeholder="Bug Fixes, Features, Documentation, Testing"
+                        >
+
+                    </div>
+
+
+                    <!-- Difficulty -->
+
+                    <div class="form-group">
+
+                        <label for="preferredDifficulty">
+                            Preferred difficulty
+                        </label>
+
+                        <select id="preferredDifficulty">
+
+                            <option value="">
+                                Select difficulty
+                            </option>
+
+                            <option value="Beginner">
+                                Beginner
+                            </option>
+
+                            <option value="Intermediate">
+                                Intermediate
+                            </option>
+
+                            <option value="Advanced">
+                                Advanced
+                            </option>
+
+                            <option value="Any">
+                                Any difficulty
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Learning -->
+
+                    <div class="form-group">
+
+                        <label for="learningSkills">
+                            Learning interests
+                            <span
+                                style="
+                                    color:#57606a;
+                                    font-weight:400;
+                                "
+                            >
+                                (optional)
+                            </span>
+                        </label>
+
+                        <p class="form-description">
+                            Technologies or areas you want to learn through contributions.
+                        </p>
+
+                        <input
+                            type="text"
+                            id="learningSkills"
+                            placeholder="Docker, React, Machine Learning"
+                        >
+
+                    </div>
+
+
+                    <!-- Buttons -->
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            class="save-button"
+                        >
+                            Save profile
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cancel-button"
+                            onclick="cancelEdit()"
+                        >
+                            Cancel
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="message"
+                        class="message"
+                    >
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    let currentUser = null;
+
+
+    /* =====================================================
+       LOAD GITHUB SESSION
+    ===================================================== */
+
+    async function loadProfile() {
+
+        try {
+
+            const response =
+                await fetch("/api/me");
+
+
+            if (!response.ok) {
+
+                window.location.href = "/";
+
+                return;
+            }
+
+
+            currentUser =
+                await response.json();
+
+
+            /*
+             * Profile name
+             */
+
+            document.getElementById(
+                "profileName"
+            ).textContent =
+                currentUser.name ||
+                currentUser.username ||
+                "Developer";
+
+
+            /*
+             * Username
+             */
+
+            document.getElementById(
+                "profileUsername"
+            ).textContent =
+                "@" +
+                (
+                    currentUser.username ||
+                    "username"
+                );
+
+
+            /*
+             * Navbar username
+             */
+
+            document.getElementById(
+                "navUsername"
+            ).textContent =
+                currentUser.username ||
+                "User";
+
+
+            /*
+             * Avatar
+             */
+
+            if (currentUser.avatarUrl) {
+
+                document.getElementById(
+                    "profileAvatar"
+                ).src =
+                    currentUser.avatarUrl;
+
+
+                document.getElementById(
+                    "navAvatar"
+                ).src =
+                    currentUser.avatarUrl;
+
+            }
+
+
+            /*
+             * GitHub profile
+             */
+
+            if (currentUser.profileUrl) {
+
+                document.getElementById(
+                    "githubLink"
+                ).href =
+                    currentUser.profileUrl;
+
+            }
+
+
+            /*
+             * Load saved OpenSeek profile
+             */
+
+            await loadSavedProfile();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Profile loading failed:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       LOAD SAVED PROFILE
+    ===================================================== */
+
+    async function loadSavedProfile() {
+
+        try {
+
+            const response =
+                await fetch("/api/users");
+
+
+            /*
+             * No profile yet
+             */
+
+            if (response.status === 404) {
+
+                showEditForm();
+
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load profile"
+                );
+
+            }
+
+
+            const user =
+                await response.json();
+
+
+            /*
+             * Display saved data
+             */
+
+            displayTags(
+                "skillsDisplay",
+                user.skills
+            );
+
+
+            displayText(
+                "experienceDisplay",
+                user.experience
+            );
+
+
+            displayTags(
+                "technologyDisplay",
+                user.preferredTechnologies
+            );
+
+
+            displayTags(
+                "contributionDisplay",
+                user.contributionTypes
+            );
+
+
+            displayText(
+                "difficultyDisplay",
+                user.preferredDifficulty
+            );
+
+
+            displayTags(
+                "learningDisplay",
+                user.learningSkills
+            );
+
+
+            /*
+             * Fill edit form
+             */
+
+            document.getElementById(
+                "skills"
+            ).value =
+                (user.skills || []).join(", ");
+
+
+            document.getElementById(
+                "experience"
+            ).value =
+                user.experience || "";
+
+
+            document.getElementById(
+                "technologies"
+            ).value =
+                (user.preferredTechnologies || [])
+                    .join(", ");
+
+
+            document.getElementById(
+                "contributionTypes"
+            ).value =
+                (user.contributionTypes || [])
+                    .join(", ");
+
+
+            document.getElementById(
+                "preferredDifficulty"
+            ).value =
+                user.preferredDifficulty || "";
+
+
+            document.getElementById(
+                "learningSkills"
+            ).value =
+                (user.learningSkills || [])
+                    .join(", ");
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Failed to load saved profile:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       DISPLAY TEXT
+    ===================================================== */
+
+    function displayText(
+        elementId,
+        value
+    ) {
+
+        const element =
+            document.getElementById(
+                elementId
+            );
+
+
+        if (value) {
+
+            element.textContent =
+                value;
+
+            element.classList.remove(
+                "empty"
+            );
+
+        }
+
+        else {
+
+            element.textContent =
+                "Not set";
+
+            element.classList.add(
+                "empty"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       DISPLAY TAGS
+    ===================================================== */
+
+    function displayTags(
+        elementId,
+        values
+    ) {
+
+        const element =
+            document.getElementById(
+                elementId
+            );
+
+
+        element.innerHTML = "";
+
+
+        if (
+            !values ||
+            values.length === 0
+        ) {
+
+            element.innerHTML =
+                '<span class="empty">Not set</span>';
+
+            return;
+        }
+
+
+        const tags =
+            document.createElement("div");
+
+        tags.className =
+            "tags";
+
+
+        values.forEach(
+            function(value) {
+
+                const tag =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                tag.className =
+                    "tag";
+
+
+                tag.textContent =
+                    value;
+
+
+                tags.appendChild(tag);
+
+            }
+        );
+
+
+        element.appendChild(tags);
+
+    }
+
+
+    /* =====================================================
+       SHOW EDIT FORM
+    ===================================================== */
+
+    function showEditForm() {
+
+        document.getElementById(
+            "profileView"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "editSection"
+        ).classList.add(
+            "visible"
+        );
+
+
+        document.getElementById(
+            "editButton"
+        ).style.display =
+            "none";
+
+    }
+
+
+    /* =====================================================
+       CANCEL EDIT
+    ===================================================== */
+
+    function cancelEdit() {
+
+        document.getElementById(
+            "editSection"
+        ).classList.remove(
+            "visible"
+        );
+
+
+        document.getElementById(
+            "profileView"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "editButton"
+        ).style.display =
+            "block";
+
+    }
+
+
+    /* =====================================================
+       SAVE PROFILE
+    ===================================================== */
+
+    document
+        .getElementById("profileForm")
+        .addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                /*
+                 * Convert comma-separated values
+                 * into arrays.
+                 */
+
+                const skills =
+                    document
+                        .getElementById("skills")
+                        .value
+                        .split(",")
+                        .map(
+                            item => item.trim()
+                        )
+                        .filter(Boolean);
+
+
+                const technologies =
+                    document
+                        .getElementById("technologies")
+                        .value
+                        .split(",")
+                        .map(
+                            item => item.trim()
+                        )
+                        .filter(Boolean);
+
+
+                const contributionTypes =
+                    document
+                        .getElementById(
+                            "contributionTypes"
+                        )
+                        .value
+                        .split(",")
+                        .map(
+                            item => item.trim()
+                        )
+                        .filter(Boolean);
+
+
+                const learningSkills =
+                    document
+                        .getElementById(
+                            "learningSkills"
+                        )
+                        .value
+                        .split(",")
+                        .map(
+                            item => item.trim()
+                        )
+                        .filter(Boolean);
+
+
+                /*
+                 * Profile data
+                 */
+
+                const profileData = {
+
+                    name:
+                        currentUser.name ||
+                        currentUser.username,
+
+                    githubUsername:
+                        currentUser.username,
+
+                    skills:
+                        skills,
+
+                    experience:
+                        document
+                            .getElementById(
+                                "experience"
+                            )
+                            .value,
+
+                    preferredTechnologies:
+                        technologies,
+
+                    contributionTypes:
+                        contributionTypes,
+
+                    preferredDifficulty:
+                        document
+                            .getElementById(
+                                "preferredDifficulty"
+                            )
+                            .value,
+
+                    learningSkills:
+                        learningSkills
+
+                };
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/users",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        profileData
+                                    )
+
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    const message =
+                        document.getElementById(
+                            "message"
+                        );
+
+
+                    if (!response.ok) {
+
+                        message.textContent =
+                            result.message ||
+                            "Failed to save profile.";
+
+                        message.className =
+                            "message error";
+
+                        return;
+                    }
+
+
+                    message.textContent =
+                        "Profile saved successfully.";
+
+                    message.className =
+                        "message success";
+
+
+                    /*
+                     * Return to profile view
+                     */
+
+                    setTimeout(
+                        async function() {
+
+                            document.getElementById(
+                                "editSection"
+                            ).classList.remove(
+                                "visible"
+                            );
+
+
+                            document.getElementById(
+                                "profileView"
+                            ).style.display =
+                                "block";
+
+
+                            document.getElementById(
+                                "editButton"
+                            ).style.display =
+                                "block";
+
+
+                            await loadSavedProfile();
+
+                        },
+                        700
+                    );
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Save failed:",
+                        error
+                    );
+
+
+                    const message =
+                        document.getElementById(
+                            "message"
+                        );
+
+
+                    message.textContent =
+                        "Unable to save profile.";
+
+                    message.className =
+                        "message error";
+
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    loadProfile();
+
+</script>
+
+
 </body>
+
 </html>

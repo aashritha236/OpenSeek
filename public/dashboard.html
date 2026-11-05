@@ -1,0 +1,1244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OpenSeek Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Helvetica, Arial, sans-serif;
+            background: #f6f8fa;
+            color: #1f2328;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 68px;
+            background: #ffffff;
+            border-bottom: 1px solid #d8dee4;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 40px;
+            gap: 45px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 34px;
+            flex: 1;
+            height: 100%;
+        }
+
+        .nav-links a {
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+
+            position: relative;
+
+            text-decoration: none;
+            color: #57606a;
+
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #1f2328;
+        }
+
+        .nav-links a.active {
+            color: #1f2328;
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: "";
+
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            height: 3px;
+            background: #fd8c73;
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* User */
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 16px;
+            font-weight: 500;
+
+            color: #1f2328;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 1px solid #d0d7de;
+        }
+
+        .dropdown-arrow {
+            font-size: 13px;
+            margin-left: 2px;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            max-width: 1450px;
+            margin: auto;
+
+            padding: 50px 48px 70px;
+        }
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome {
+            margin-bottom: 38px;
+        }
+
+        .welcome h1 {
+            margin: 0 0 10px;
+
+            font-size: 42px;
+            line-height: 1.2;
+
+            font-weight: 650;
+            letter-spacing: -1.2px;
+
+            color: #111827;
+        }
+
+        .welcome p {
+            margin: 0;
+
+            font-size: 21px;
+            color: #57606a;
+
+            line-height: 1.5;
+        }
+
+        /* =========================
+           ACTION CARDS
+        ========================= */
+
+        .action-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 22px;
+
+            margin-bottom: 48px;
+        }
+
+        .action-card {
+            background: #ffffff;
+
+            border: 1px solid #d8dee4;
+            border-radius: 10px;
+
+            min-height: 150px;
+
+            padding: 26px 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            text-decoration: none;
+            color: inherit;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .action-card:hover {
+            border-color: #b6c2cc;
+
+            box-shadow:
+                0 4px 12px rgba(31, 35, 40, 0.08);
+
+            transform: translateY(-1px);
+        }
+
+        .action-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .action-icon {
+            width: 64px;
+            height: 64px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+        }
+
+        .recommend-icon {
+            background: #e8e7ff;
+            color: #3030a8;
+        }
+
+        .search-icon {
+            background: #dcf7e7;
+            color: #087f3f;
+        }
+
+        .action-icon svg {
+            width: 31px;
+            height: 31px;
+        }
+
+        .action-content h2 {
+            margin: 0 0 7px;
+
+            font-size: 23px;
+            font-weight: 650;
+
+            color: #111827;
+        }
+
+        .action-content p {
+            margin: 0;
+
+            max-width: 470px;
+
+            font-size: 16px;
+            line-height: 1.45;
+
+            color: #57606a;
+        }
+
+        .action-arrow {
+            font-size: 36px;
+            font-weight: 300;
+
+            color: #57606a;
+
+            margin-left: 20px;
+        }
+
+        /* =========================
+           RECOMMENDATION HEADER
+        ========================= */
+
+        .recommendation-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            margin-bottom: 22px;
+        }
+
+        .recommendation-title h2 {
+            margin: 0 0 5px;
+
+            font-size: 30px;
+            font-weight: 650;
+
+            letter-spacing: -0.5px;
+        }
+
+        .recommendation-title p {
+            margin: 0;
+
+            font-size: 17px;
+            color: #57606a;
+        }
+
+        .explore-link {
+            color: #0969da;
+
+            text-decoration: none;
+
+            font-size: 17px;
+            font-weight: 600;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .explore-link:hover {
+            text-decoration: underline;
+        }
+
+        .explore-arrow {
+            font-size: 22px;
+        }
+
+        /* =========================
+           ISSUE CARDS
+        ========================= */
+
+        .issues {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .issue-card {
+            background: #ffffff;
+
+            border: 1px solid #d8dee4;
+            border-radius: 10px;
+
+            min-height: 130px;
+
+            padding: 20px 28px;
+
+            display: grid;
+
+            grid-template-columns:
+                70px
+                minmax(350px, 1fr)
+                auto
+                auto;
+
+            align-items: center;
+
+            gap: 22px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .issue-card:hover {
+            border-color: #b6c2cc;
+
+            box-shadow:
+                0 3px 10px rgba(31, 35, 40, 0.06);
+        }
+
+        /* GitHub icon */
+
+        .github-icon {
+            width: 48px;
+            height: 48px;
+
+            background: #24292f;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+        }
+
+        .github-icon svg {
+            width: 29px;
+            height: 29px;
+        }
+
+        /* Issue main */
+
+        .issue-main {
+            min-width: 0;
+        }
+
+        .issue-title {
+            display: block;
+
+            color: #0969da;
+
+            font-size: 21px;
+            font-weight: 650;
+
+            text-decoration: none;
+
+            margin-bottom: 4px;
+        }
+
+        .issue-title:hover {
+            text-decoration: underline;
+        }
+
+        .repository {
+            color: #57606a;
+
+            font-size: 16px;
+
+            margin-bottom: 12px;
+        }
+
+        .labels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .label {
+            padding: 5px 11px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+            font-weight: 500;
+
+            background: #f1f3f5;
+            color: #24292f;
+        }
+
+        .label-java {
+            background: #dceeff;
+            color: #0550ae;
+        }
+
+        .label-blue {
+            background: #e4ddff;
+            color: #432dd7;
+        }
+
+        .label-green {
+            background: #d8f5df;
+            color: #116329;
+        }
+
+        .label-orange {
+            background: #ffe5cf;
+            color: #9a3412;
+        }
+
+        .label-gray {
+            background: #eaeef2;
+            color: #24292f;
+        }
+
+        /* Match */
+
+        .match-section {
+            align-self: center;
+        }
+
+        .match {
+            display: inline-block;
+
+            background: #d8f5e1;
+            color: #116329;
+
+            border-radius: 22px;
+
+            padding: 8px 15px;
+
+            font-size: 15px;
+            font-weight: 650;
+
+            white-space: nowrap;
+        }
+
+        /* Issue info */
+
+        .issue-info {
+            color: #57606a;
+
+            font-size: 15px;
+
+            white-space: nowrap;
+        }
+
+        .time-icon {
+            display: inline-flex;
+
+            vertical-align: middle;
+
+            margin-right: 5px;
+        }
+
+        .time-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Button */
+
+        .view-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #24292f;
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+
+            padding: 11px 18px;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            white-space: nowrap;
+
+            transition: background 0.2s ease;
+        }
+
+        .view-button:hover {
+            background: #424a53;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1200px) {
+
+            .navbar {
+                padding: 0 25px;
+                gap: 25px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-links a {
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 40px 30px;
+            }
+
+            .issue-card {
+                grid-template-columns:
+                    60px
+                    minmax(250px, 1fr)
+                    auto
+                    auto;
+
+                gap: 15px;
+            }
+
+            .issue-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 18px 20px;
+
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+
+                width: 100%;
+
+                height: 45px;
+
+                overflow-x: auto;
+            }
+
+            .nav-links a {
+                height: 45px;
+
+                white-space: nowrap;
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .issue-card {
+                grid-template-columns: 55px 1fr auto;
+            }
+
+            .issue-card .match-section {
+                grid-column: 3;
+                grid-row: 1;
+            }
+
+            .issue-card .view-button {
+                grid-column: 2 / 4;
+                justify-self: start;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                padding: 30px 18px;
+            }
+
+            .welcome h1 {
+                font-size: 32px;
+            }
+
+            .welcome p {
+                font-size: 17px;
+            }
+
+            .action-card {
+                padding: 20px;
+            }
+
+            .action-left {
+                gap: 16px;
+            }
+
+            .action-icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .action-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .action-content h2 {
+                font-size: 19px;
+            }
+
+            .action-content p {
+                font-size: 14px;
+            }
+
+            .action-arrow {
+                font-size: 27px;
+            }
+
+            .recommendation-header {
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .recommendation-title h2 {
+                font-size: 25px;
+            }
+
+            .explore-link {
+                font-size: 14px;
+            }
+
+            .issue-card {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .github-icon {
+                width: 42px;
+                height: 42px;
+            }
+
+            .match-section {
+                order: 2;
+            }
+
+            .issue-main {
+                order: 3;
+            }
+
+            .view-button {
+                order: 4;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar">
+
+    <a href="/dashboard.html" class="logo">
+        OpenSeek
+    </a>
+
+    <div class="nav-links">
+
+        <a href="/dashboard.html" class="active">
+            Dashboard
+        </a>
+
+        <a href="/contributions.html">
+            My Contributions
+        </a>
+
+        <a href="/newcontribution.html">
+            New Contribution
+        </a>
+
+        <a href="/repositories.html">
+            Repositories
+        </a>
+
+        <a href="/profile.html">
+            Profile
+        </a>
+
+    </div>
+
+    <div class="user-menu">
+
+        <img
+            id="avatar"
+            class="user-avatar"
+            src=""
+            alt="GitHub profile"
+        >
+
+        <span id="username">
+            User
+        </span>
+
+        <span class="dropdown-arrow">
+            ▾
+        </span>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="container">
+
+    <!-- Welcome -->
+
+    <section class="welcome">
+
+        <h1>
+            Welcome back, <span id="name">Developer</span> 👋
+        </h1>
+
+        <p>
+            Discover open-source issues that match your skills and interests.
+        </p>
+
+    </section>
+
+
+    <!-- =================================================
+         QUICK ACTIONS
+    ================================================== -->
+
+    <section class="action-grid">
+
+        <!-- Recommended -->
+
+        <a
+            href="/dashboard.html"
+            class="action-card"
+        >
+
+            <div class="action-left">
+
+                <div class="action-icon recommend-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <polygon points="12 2 19 5 22 12 19 19 12 22 5 19 2 12 5 5 12 2"></polygon>
+                        <polygon points="12 7 15 9 17 12 14 15 12 17 9 15 7 12 7"></polygon>
+                    </svg>
+
+                </div>
+
+                <div class="action-content">
+
+                    <h2>
+                        Recommended for You
+                    </h2>
+
+                    <p>
+                        Find issues based on your saved skills,
+                        technologies, experience and preferences.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="action-arrow">
+                ›
+            </div>
+
+        </a>
+
+
+        <!-- New Contribution -->
+
+        <a
+            href="/newcontribution.html"
+            class="action-card"
+        >
+
+            <div class="action-left">
+
+                <div class="action-icon search-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="16.5" y1="16.5" x2="22" y2="22"></line>
+                    </svg>
+
+                </div>
+
+                <div class="action-content">
+
+                    <h2>
+                        Find a New Contribution
+                    </h2>
+
+                    <p>
+                        Search GitHub for something specific,
+                        without changing your saved profile.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="action-arrow">
+                ›
+            </div>
+
+        </a>
+
+    </section>
+
+
+    <!-- =================================================
+         RECOMMENDED ISSUES
+    ================================================== -->
+
+    <section>
+
+        <div class="recommendation-header">
+
+            <div class="recommendation-title">
+
+                <h2>
+                    Recommended Issues
+                </h2>
+
+                <p>
+                    Based on your saved OpenSeek profile.
+                </p>
+
+            </div>
+
+            <a
+                href="/newcontribution.html"
+                class="explore-link"
+            >
+                Explore more
+                <span class="explore-arrow">→</span>
+            </a>
+
+        </div>
+
+
+        <div class="issues">
+
+            <!-- ISSUE 1 -->
+
+            <article class="issue-card">
+
+                <div class="github-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.41 7.86 10.94.58.1.79-.25.79-.56v-2.17c-3.2.7-3.87-1.54-3.87-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.71 1.25 3.37.96.1-.75.4-1.25.73-1.54-2.56-.29-5.26-1.28-5.26-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.71 5.39-5.29 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+                    </svg>
+
+                </div>
+
+                <div class="issue-main">
+
+                    <a href="#" class="issue-title">
+                        Fix authentication validation
+                    </a>
+
+                    <div class="repository">
+                        example-org / authentication-service
+                    </div>
+
+                    <div class="labels">
+
+                        <span class="label label-java">
+                            Java
+                        </span>
+
+                        <span class="label label-blue">
+                            Backend
+                        </span>
+
+                        <span class="label label-green">
+                            Good First Issue
+                        </span>
+
+                        <span class="label label-gray">
+                            Beginner
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="match-section">
+
+                    <span class="match">
+                        94% match
+                    </span>
+
+                </div>
+
+                <div class="issue-info">
+
+                    <span class="time-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <polyline points="12 7 12 12 15 14"></polyline>
+                        </svg>
+
+                    </span>
+
+                    Updated recently · 2–4 hours
+
+                </div>
+
+                <a
+                    href="#"
+                    class="view-button"
+                >
+                    View Issue
+                </a>
+
+            </article>
+
+
+            <!-- ISSUE 2 -->
+
+            <article class="issue-card">
+
+                <div class="github-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.41 7.86 10.94.58.1.79-.25.79-.56v-2.17c0-3.2-.01-3.87-.01-3.87-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.71 1.25 3.37.96.1-.75.4-1.25.73-1.54-2.56-.29-5.26-1.28-5.26-5.69 0-1.26.45-2.29 1.19-3.1.74.81 1.19 1.84 1.19 3.1 0 4.42-2.71 5.39-5.29 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+                    </svg>
+
+                </div>
+
+                <div class="issue-main">
+
+                    <a href="#" class="issue-title">
+                        Improve API documentation
+                    </a>
+
+                    <div class="repository">
+                        open-source-project / api-server
+                    </div>
+
+                    <div class="labels">
+
+                        <span class="label label-java">
+                            JavaScript
+                        </span>
+
+                        <span class="label label-blue">
+                            Documentation
+                        </span>
+
+                        <span class="label label-green">
+                            Good First Issue
+                        </span>
+
+                        <span class="label label-gray">
+                            Beginner
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="match-section">
+
+                    <span class="match">
+                        88% match
+                    </span>
+
+                </div>
+
+                <div class="issue-info">
+
+                    <span class="time-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <polyline points="12 7 12 12 15 14"></polyline>
+                        </svg>
+
+                    </span>
+
+                    Updated recently · 1–2 hours
+
+                </div>
+
+                <a
+                    href="#"
+                    class="view-button"
+                >
+                    View Issue
+                </a>
+
+            </article>
+
+
+            <!-- ISSUE 3 -->
+
+            <article class="issue-card">
+
+                <div class="github-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.41 7.86 10.94.58.1.79-.25.79-.56v-2.17c0-3.2-.01-3.87-.01-3.87-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.71 1.25 3.37.96.1-.75.4-1.25.73-1.54-2.56-.29-5.26-1.28-5.26-5.69 0-1.26.45-2.29 1.19-3.1.74.81 1.19 1.84 1.19 3.1 0 4.42-2.71 5.39-5.29 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+                    </svg>
+
+                </div>
+
+                <div class="issue-main">
+
+                    <a href="#" class="issue-title">
+                        Add unit tests for user service
+                    </a>
+
+                    <div class="repository">
+                        developer-tools / user-service
+                    </div>
+
+                    <div class="labels">
+
+                        <span class="label label-java">
+                            Python
+                        </span>
+
+                        <span class="label label-blue">
+                            Testing
+                        </span>
+
+                        <span class="label label-orange">
+                            Intermediate
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="match-section">
+
+                    <span class="match">
+                        82% match
+                    </span>
+
+                </div>
+
+                <div class="issue-info">
+
+                    <span class="time-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <polyline points="12 7 12 12 15 14"></polyline>
+                        </svg>
+
+                    </span>
+
+                    Updated recently · 3–5 hours
+
+                </div>
+
+                <a
+                    href="#"
+                    class="view-button"
+                >
+                    View Issue
+                </a>
+
+            </article>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    async function loadUser() {
+
+        try {
+
+            const response = await fetch("/api/me");
+
+            if (!response.ok) {
+
+                window.location.href = "/";
+
+                return;
+            }
+
+            const user = await response.json();
+
+            /*
+             * Display GitHub user's name
+             */
+
+            document.getElementById("name").textContent =
+                user.name || user.username || "Developer";
+
+
+            /*
+             * Display GitHub username
+             */
+
+            document.getElementById("username").textContent =
+                user.username || "User";
+
+
+            /*
+             * Display GitHub avatar
+             */
+
+            if (user.avatarUrl) {
+
+                document.getElementById("avatar").src =
+                    user.avatarUrl;
+
+            } else {
+
+                document.getElementById("avatar").src =
+                    "https://github.githubassets.com/favicons/favicon.png";
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Failed to load user:",
+                error
+            );
+
+            window.location.href = "/";
+
+        }
+
+    }
+
+
+    loadUser();
+
+</script>
+
+</body>
+</html>
+```

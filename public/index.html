@@ -1,22 +1,518 @@
 <!DOCTYPE html>
-<html lang = "en">
+<html lang="en">
 <head>
-	<meta charset = "UTF-8">
-	<meta name = "viewport" content = "width=device-width, initial-scale=1.0">
-	<title>OpenSeek | Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OpenSeek</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Helvetica,
+                Arial,
+                sans-serif;
+
+            background: #ffffff;
+            color: #1f2328;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 64px;
+            border-bottom: 1px solid #d8dee4;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 600;
+            color: #1f2328;
+            text-decoration: none;
+            letter-spacing: -0.3px;
+        }
+
+        .signin {
+            color: #1f2328;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .signin:hover {
+            color: #0969da;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            max-width: 1100px;
+            margin: 0 auto;
+
+            padding: 100px 30px 70px;
+
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 70px;
+
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 620px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 5vw, 64px);
+            line-height: 1.05;
+            letter-spacing: -2.5px;
+
+            font-weight: 650;
+
+            margin-bottom: 24px;
+        }
+
+        .hero h1 span {
+            color: #0969da;
+        }
+
+        .hero p {
+            font-size: 19px;
+            line-height: 1.6;
+            color: #656d76;
+
+            max-width: 540px;
+            margin-bottom: 32px;
+        }
+
+        .github-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #24292f;
+            color: white;
+
+            padding: 11px 18px;
+
+            border-radius: 6px;
+
+            text-decoration: none;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            border: 1px solid rgba(31, 35, 40, 0.15);
+
+            transition: 0.15s ease;
+        }
+
+        .github-btn:hover {
+            background: #32383f;
+        }
+
+        .github-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 9px;
+            fill: currentColor;
+        }
+
+
+        /* =========================
+           PRODUCT PREVIEW
+        ========================= */
+
+        .preview {
+            border: 1px solid #d8dee4;
+            border-radius: 8px;
+
+            overflow: hidden;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 8px 24px rgba(140, 149, 159, 0.15);
+        }
+
+        .preview-header {
+            height: 44px;
+
+            border-bottom: 1px solid #d8dee4;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 16px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .preview-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #d0d7de;
+
+            margin-right: 8px;
+        }
+
+        .issue {
+            padding: 18px 20px;
+
+            border-bottom: 1px solid #d8dee4;
+        }
+
+        .issue:last-child {
+            border-bottom: none;
+        }
+
+        .issue-title {
+            font-size: 15px;
+            font-weight: 600;
+
+            color: #0969da;
+
+            margin-bottom: 10px;
+        }
+
+        .issue-meta {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 11px;
+
+            padding: 3px 8px;
+
+            border: 1px solid #d8dee4;
+
+            border-radius: 20px;
+
+            color: #656d76;
+
+            background: #f6f8fa;
+        }
+
+        .match {
+            margin-top: 13px;
+
+            font-size: 12px;
+
+            color: #57606a;
+        }
+
+        .match strong {
+            color: #1f2328;
+        }
+
+
+        /* =========================
+           BOTTOM STATEMENT
+        ========================= */
+
+        .statement {
+            border-top: 1px solid #d8dee4;
+
+            max-width: 1100px;
+
+            margin: 0 auto;
+
+            padding: 35px 30px 45px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        .statement p {
+            font-size: 15px;
+            color: #656d76;
+        }
+
+        .statement strong {
+            color: #1f2328;
+            font-weight: 600;
+        }
+
+        .details {
+            display: flex;
+            gap: 24px;
+
+            white-space: nowrap;
+
+            font-size: 13px;
+            color: #656d76;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                padding: 0 24px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+
+                padding:
+                    70px 24px
+                    50px;
+
+                gap: 50px;
+            }
+
+            .hero h1 {
+                font-size: 46px;
+            }
+
+            .statement {
+                margin: 0 24px;
+
+                padding-left: 0;
+                padding-right: 0;
+
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .details {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
+
 <body>
-	<h1>OpenSeek</h1>
-	<p>Seek, Contribute, Make an Impact. </p>
-	
-	<h2> Welcome to OpenSeek </h2>
-	<p> Discover the open-source contributions that match your skills. </p>
-	
-	<button id="github-login">Continue with GitHub</button>
-	<script>
-		document.getElementById("github-login").addEventListener("click", () => {
-		window.location.href = "/auth/github";
-		});
-	</script>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+            OpenSeek
+        </a>
+
+        <a href="/auth/github" class="signin">
+            Sign in
+        </a>
+
+    </nav>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <h1>
+                    Find your next
+                    <span>open-source</span>
+                    contribution.
+                </h1>
+
+                <p>
+                    Discover GitHub issues that match your
+                    skills, interests, and experience.
+                </p>
+
+                <a
+                    href="/auth/github"
+                    class="github-btn"
+                >
+
+                    <svg
+                        class="github-icon"
+                        viewBox="0 0 16 16"
+                        aria-hidden="true"
+                    >
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54
+                        2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49
+                        -2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15
+                        -.68-.52-.01-.53.63-.01 1.08.58 1.23.82
+                        .72 1.21 1.87.87 2.33.66.07-.52.28-.87
+                        .51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                        0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                        0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27
+                        c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82
+                        2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82
+                        1.27.82 2.15 0 3.07-1.87 3.75-3.65
+                        3.95.29.25.54.73.54 1.48 0 1.07-.01
+                        1.93-.01 2.2 0 .21.15.46.55.38A8.013
+                        8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+
+                    Continue with GitHub
+
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 PRODUCT PREVIEW
+            ========================== -->
+
+            <div class="preview">
+
+                <div class="preview-header">
+
+                    <span class="preview-dot"></span>
+
+                    Recommended issues
+
+                </div>
+
+
+                <div class="issue">
+
+                    <div class="issue-title">
+                        Fix authentication validation
+                    </div>
+
+                    <div class="issue-meta">
+
+                        <span class="tag">
+                            Java
+                        </span>
+
+                        <span class="tag">
+                            Backend
+                        </span>
+
+                        <span class="tag">
+                            Good First Issue
+                        </span>
+
+                    </div>
+
+                    <div class="match">
+                        Match <strong>94%</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="issue">
+
+                    <div class="issue-title">
+                        Improve API documentation
+                    </div>
+
+                    <div class="issue-meta">
+
+                        <span class="tag">
+                            JavaScript
+                        </span>
+
+                        <span class="tag">
+                            Documentation
+                        </span>
+
+                    </div>
+
+                    <div class="match">
+                        Match <strong>88%</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="issue">
+
+                    <div class="issue-title">
+                        Add unit tests
+                    </div>
+
+                    <div class="issue-meta">
+
+                        <span class="tag">
+                            Python
+                        </span>
+
+                        <span class="tag">
+                            Testing
+                        </span>
+
+                    </div>
+
+                    <div class="match">
+                        Match <strong>82%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BOTTOM STATEMENT
+        ========================== -->
+
+        <section class="statement">
+
+            <p>
+                <strong>OpenSeek</strong>
+                helps developers discover meaningful
+                open-source contributions.
+            </p>
+
+            <div class="details">
+
+                <span>GitHub-powered</span>
+
+                <span>Personalized</span>
+
+                <span>Open source</span>
+
+            </div>
+
+        </section>
+
+    </main>
+
 </body>
 </html>
